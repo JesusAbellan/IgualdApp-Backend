@@ -8,4 +8,5 @@ const usuario_controlador_1 = __importDefault(require("../controladores/usuario.
 const usuarioRutas = (0, express_1.Router)();
 usuarioRutas.get("/getDatos", usuario_controlador_1.default.prototype.getDatos);
 usuarioRutas.post("/login", usuario_controlador_1.default.prototype.login);
+usuarioRutas.post("/newUser", usuario_controlador_1.default.prototype.crearUsuario);
 exports.default = usuarioRutas;
