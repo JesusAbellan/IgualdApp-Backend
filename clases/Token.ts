@@ -11,7 +11,7 @@ export class Token{
 
    static generaToken(payload:any):string{
        return jwt.sign({
-           usuario:payload,
+           usuario: payload,
        },this.claveSecreta,{
            expiresIn:this.caducidad
        });
@@ -20,6 +20,7 @@ export class Token{
    static compareToken(token:string){
     return new Promise<any>((resolve, reject)=>{
         jwt.verify(token, this.claveSecreta, (err, decoded) =>{
+            console.log('decoded',decoded);
             if(err){
                 reject('token inválido');
             } else {

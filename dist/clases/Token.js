@@ -16,6 +16,19 @@ class Token {
             expiresIn: this.caducidad
         });
     }
+    static compareToken(token) {
+        return new Promise((resolve, reject) => {
+            jsonwebtoken_1.default.verify(token, this.claveSecreta, (err, decoded) => {
+                console.log('decoded', decoded);
+                if (err) {
+                    reject('token inválido');
+                }
+                else {
+                    resolve(decoded);
+                }
+            });
+        });
+    }
 }
 exports.Token = Token;
 Token.datos = dotenv_1.default.config();

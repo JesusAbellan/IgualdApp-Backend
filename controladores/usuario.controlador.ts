@@ -36,12 +36,7 @@ class usuarioController{
             else{
                 return res.status(200).json({
                     status:"ok",
-                    message:"el usuario creado es " + usuarioDB.usuario,
-                    usuario:{
-                        _id: usuarioDB._id,
-                        usuario: usuarioDB.usuario,
-                        email:usuarioDB.email
-                    }
+                    message:"el usuario creado es " + usuarioDB.usuario
                 })
             }
         })
@@ -86,14 +81,14 @@ class usuarioController{
     }
 
     renuevaToken(req:Request,res:Response){
-        let usuarioToken = req.body.usuario;
+        let usuarioToken = req.body.usuarioToken;
         const usuarioQueMando = new Usuario();
         usuarioQueMando._id = usuarioToken._id;
         usuarioQueMando.usuario = usuarioToken.usuario;
         usuarioQueMando.role = usuarioToken.role;
         return res.status(200).json({
             status: "ok",
-            message: "El usuario y la constaseña son correctos",
+            message: "Token renovado",
             _id:usuarioToken._id,
             token: Token.generaToken(usuarioQueMando)
         });

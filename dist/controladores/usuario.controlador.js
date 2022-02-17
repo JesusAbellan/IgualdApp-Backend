@@ -39,22 +39,17 @@ class usuarioController {
             else {
                 return res.status(200).json({
                     status: "ok",
-                    message: "el usuario creado es " + usuarioDB.usuario,
-                    usuario: {
-                        _id: usuarioDB._id,
-                        usuario: usuarioDB.usuario,
-                        email: usuarioDB.email
-                    }
+                    message: "el usuario creado es " + usuarioDB.usuario
                 });
             }
         });
     }
     login(req, res) {
         console.log(req.body);
-        let usuario = req.body.usuario;
+        let email = req.body.email;
         let pwd = req.body.pwd;
         usuario_modelo_1.Usuario.findOne({
-            usuario: usuario,
+            email: email,
         }, null, null, (err, user) => {
             if (err) {
                 throw err;
@@ -84,6 +79,19 @@ class usuarioController {
                     message: "usuario no encontrado"
                 });
             }
+        });
+    }
+    renuevaToken(req, res) {
+        let usuarioToken = req.body.usuarioToken;
+        const usuarioQueMando = new usuario_modelo_1.Usuario();
+        usuarioQueMando._id = usuarioToken._id;
+        usuarioQueMando.usuario = usuarioToken.usuario;
+        usuarioQueMando.role = usuarioToken.role;
+        return res.status(200).json({
+            status: "ok",
+            message: "Token renovado",
+            _id: usuarioToken._id,
+            token: Token_1.Token.generaToken(usuarioQueMando)
         });
     }
 }

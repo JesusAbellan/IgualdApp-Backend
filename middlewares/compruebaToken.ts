@@ -8,9 +8,10 @@ export const compruebaToken=(req:any, res: any, next:NextFunction)=>{
     let userToken = '';
     
     if(token){
-        userToken = token.split('Bearer ');
+        userToken = token.split('Bearer ')[1];
+        console.log('token',userToken);
         Token.compareToken(userToken).then(async decoded=>{
-            const idUsuario = decoded._id;
+            const idUsuario = decoded.usuario._id;
             const encontrado = await Usuario.findById(idUsuario);
             if (encontrado) {
                 req.body.usuarioToken = encontrado;
@@ -20,12 +21,19 @@ export const compruebaToken=(req:any, res: any, next:NextFunction)=>{
                     nessage:'Token inválido'
                 })
             }
+            next();
         }).catch(err=>{
             res.status(200).json({
                 status:'fail',
-                nessage:err
+                nessage:'Token inválido'
             })
         });
+    }
+    else{
+        res.status(200).json({
+            status:'fail',
+            nessage:'Token inválido'
+        })
     }
     
 }
