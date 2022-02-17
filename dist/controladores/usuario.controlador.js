@@ -25,9 +25,11 @@ class usuarioController {
     }
     crearUsuario(req, res) {
         let u = new usuario_modelo_1.Usuario();
-        u.usuario = req.body.usuario;
+        u.nombre = req.body.nombre;
+        u.apellidos = req.body.apellidos;
         u.email = req.body.email;
         u.role = ['011'];
+        console.log(u);
         let pwdPlana = req.body.pwd;
         const hash = bcrypt_1.default.hashSync(pwdPlana, 10);
         u.pwd = hash;
@@ -39,7 +41,7 @@ class usuarioController {
             else {
                 return res.status(200).json({
                     status: "ok",
-                    message: "el usuario creado es " + usuarioDB.usuario
+                    message: "el usuario creado es " + usuarioDB.nombre + " " + usuarioDB.apellidos
                 });
             }
         });
@@ -58,25 +60,27 @@ class usuarioController {
                 if (bcrypt_1.default.compareSync(pwd, user.pwd)) {
                     const usuarioQueMando = new usuario_modelo_1.Usuario();
                     usuarioQueMando._id = user._id;
-                    usuarioQueMando.usuario = user.usuario;
+                    usuarioQueMando.nombre = user.nombre;
+                    usuarioQueMando.apellidos = user.apellidos;
                     usuarioQueMando.role = user.role;
                     return res.status(200).json({
                         status: "ok",
                         _id: user._id,
-                        token: Token_1.Token.generaToken(usuarioQueMando)
+                        token: Token_1.Token.generaToken(usuarioQueMando),
+                        mensaje: 'login correcto'
                     });
                 }
                 else {
                     return res.status(200).json({
                         status: "fail",
-                        message: "la contraseña no es correcta."
+                        mensaje: "la contraseña no es correcta."
                     });
                 }
             }
             else {
                 return res.status(200).json({
                     status: "fail",
-                    message: "usuario no encontrado"
+                    mensaje: "usuario no encontrado"
                 });
             }
         });
@@ -85,7 +89,8 @@ class usuarioController {
         let usuarioToken = req.body.usuarioToken;
         const usuarioQueMando = new usuario_modelo_1.Usuario();
         usuarioQueMando._id = usuarioToken._id;
-        usuarioQueMando.usuario = usuarioToken.usuario;
+        usuarioQueMando.nombre = req.body.nombre;
+        usuarioQueMando.apellidos = req.body.apellidos;
         usuarioQueMando.role = usuarioToken.role;
         return res.status(200).json({
             status: "ok",
