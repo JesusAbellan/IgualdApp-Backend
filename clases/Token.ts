@@ -16,4 +16,16 @@ export class Token{
            expiresIn:this.caducidad
        });
    }
+
+   static compareToken(token:string){
+    return new Promise<any>((resolve, reject)=>{
+        jwt.verify(token, this.claveSecreta, (err, decoded) =>{
+            if(err){
+                reject('token inválido');
+            } else {
+                resolve(decoded);
+            }
+        })
+    })
+}
 }
